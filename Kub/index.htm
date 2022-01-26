@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KP uppgift 2</title>
+
+    <!--Inkludering av bibliotek för den senaste uppdateringen
+    <script src="../libraries/p5.min.js" type="text/javascript"></script>
+    <script src="../libraries/p5.js" type="text/javascript"></script>
+ -->
+    <!--  Ett alternativ för inkludering av mig med den senaste libraries-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js" integrity="sha512-WIklPM6qPCIp6d3fSSr90j+1unQHUOoWDS4sdTiR8gxUTnyZ8S2Mr8e10sKKJ/bhJgpAa/qG068RDkg6fIlNFA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js" integrity="sha512-rMaqGbYalDaQz0lWNF2L8DHPtf4NW+gSZomExS0LcsNyRS4Rmj21+dt97XfXCZE/E569eX72Bh//Jt1EpStgiA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/addons/p5.sound.js" integrity="sha512-KxzVm+IqxNNq0+SzT/zzd5PHxY4LPrN+v5gZJ6+JKqjeU3Cr4y/djAg5eNlKDWurn1SeKZpql/yeOMWblMSzOg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/addons/p5.sound.min.js" integrity="sha512-wM+t5MzLiNHl2fwT5rWSXr2JMeymTtixiw2lWyVk1JK/jDM4RBSFoH4J8LjucwlDdY6Mu84Kj0gPXp7rLGaDyA==" crossorigin="anonymous"></script>
+
+
+    <!-- Onload fönster för att visa lite tips för hur man kan interagera med sktechen-->
+    <script>
+    function hints() {
+      alert("1-Multiple mouse clicks ==> more colors i Cubes                                     2-Use mouse wheel to zoom in and out                                                   3-Click and drag to change camera view");
+    }
+    </script>
+    <!-- Här inkluderas själva p5.js-sketchen -->
+    <script src="sketch_uppgift_2.js"></script>
+    <script type="text/javascript" src="reload.js"></script>
+
+    <!-- Låt detta script vara kvar, det är här för att jag ska kunna visa/dölja era reflektioner -->
+    <script>
+		let ref = true;
+		function togglaReflektioner(){
+			if(ref){
+				document.getElementById('reflektioner').style.display = 'none';
+			}
+			else{
+				document.getElementById('reflektioner').style.display = 'block';
+			}
+			ref = !ref;
+		}
+    </script>
+
+    <!-- lite CSS -->
+    <style>
+      *{
+        box-sizing: border-box;
+      }
+
+      body{
+        padding: 0;
+        margin: 0;
+        background-color: #d6dbd8;
+        font-family: helvetica, arial, verdana, sans-serif;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      #sketch-holder{
+        /*
+        notera att värden för bredd och höjd här korresponderar med det
+        som anges i sketchen: createCanvas(bredd, höjd)
+        */
+        width: 576px;
+        height: 576px;
+        margin: 1em auto 0 auto;
+        border: 1px solid #ccc;
+      }
+      #instruktioner{
+        margin: 1em auto 0 auto;
+        padding:1em;
+        width: 576px;
+        height: auto;
+        border: 1px solid #ccc;
+      }
+
+      #reflektioner{
+		display: none;
+		}
+
+
+        /*Här stylar jag en reload knapp för att starta om det som
+    finns i sidan utan att behöva ladda om allt för att kunna börja om.*/
+    .reload{
+      margin: 0 auto;
+      display: block;
+      border-radius: 32px;
+      cursor: pointer;
+      transition: all 0.1s ease-in-out;
+      color: #e0fbbd;
+      width: 110px;
+      height: 50px;
+      font-size: 16px;
+      background: #3128bb;
+      text-transform:capitalize;
+    }
+    .reload:hover{
+      background: #2b59d6;
+    }
+    #reflektioner{
+    font-size: 15px;
+    line-height: 1.5;
+    }
+    .title{
+      display: flex;
+    }
+
+
+    </style>
+  </head>
+  <body onload="hints()">
+    <!-- Detta är div:en som refereras till som 'parent' i sketchfilen, här kommer sketchen att visas -->
+    <div id="sketch-holder"></div>
+
+
+
+    <div id="instruktioner">
+      <!--
+      Instruktioner, uppgift 2 - Skapa ett interaktivt konstverk - "the art of repetition".
+
+      I denna uppgift ska ni skapa ett grafiskt uttryck genom att rita upp och repetera grafiska former. Uttrycket skall också vara interaktivt, och förändras baserat på musklick eller rörelser med muspekaren. Uppgiften ska även innehålla funktioner/metoder som ni gjort själva och som ni använder i koden.
+
+      (Steg 1-5 är övningar som ni ska göra som stöd för att lösa uppgiften, steg 6 är själva uppgiften. Tanken är alltså att ni kan använda exempelkoden som utgångspunkt och försöka bygga/kombinera/testa kod för att skapa en egen lösning).
+
+      Steg 1 - Prova att rita upp olika grafiska element som cirklar, rektanglar, linjer m.m.
+
+      Steg 2 - Kombinera några olika element (cirklar, rektanglar, m.m.) så att funktionen ritaEnGrej(), ritar upp ett sammansatt objekt på den plats på skärmen som anges av variablerna xpos, och ypos.
+
+      Steg 3 - Gör en "for-loop" som ritar upp en vågrät rad med objekt från ena kanten på skärmen till den andra.
+
+      Steg 4 - Gör en dubbel loop genom att lägga ovanstående loop innuti en ny loop som ritar upp rader av objekt uppifrån fönstrets topp till dess botten. Hela fönstret ska med andra ord fyllas av objekt.
+
+      Steg 5 - Gör en ny metod ritaOchVrid(xpos, ypos, rotate), som ritar upp och roterar objektet, mha funktionen rotate(). Obs - detta är svårare än vad det verkar... Läs i boken, titta på exempel om rotation. Använd även funktionen translate().
+
+      Steg 6 - Skapa ett uttryck baserat på repetition. Rita upp enkla former som repeteras och varieras på intressanta sätt. Uttrycket skall vara interaktivt, och förändras baserat på t.ex. musklick, rörelser med muspekaren eller tangetbordsklick.
+
+      Ni har användning för- men måste inte utgå från - ovanstående steg (1-5). Det är steg 6 som är uppgiften som lämnas in.
+
+      Tips - använd funktionerna random() eller noise() för att variera uttrycket och göra det mer intressant. Läs om funktionerna här: https://p5js.org/reference/
+
+      Uppgiften bedöms både baserat på visad förståelse i kommentarerna i koden, samt på kvaliteten hos det färdiga uttrycket (t.ex. komplexitet, gestaltning, originalitet).
+
+      Glöm inte att kommentera koden!
+      -->
+
+
+    <!-- En reload knapp för att starta om det som
+finns i sidan utan att behöva ladda om allt för att kunna börja om.-->
+
+      <div class="title">
+        <h2>Fun Cubes </h2>
+        <button class="reload" onclick="sampleFunction()">Reset</button>
+      </div>
+      <h3>DIK, Kreativ programmering HT20 - Uppgift 2</h3>
+      <p>Namn: <name id="namn">Saliem Antoun och Klara Eriksson</name></p>
+      <p id="reflektioner">
+
+        <strong>Uttryck </strong> <br><br>
+        Vårt uttryck bjuder in användaren att leka med en 3D form, färg och rörelse för att upptäcka och se uttrycket från olika perspektiv. Genom att ge dem denna frihet hoppas vi på att ge dem en känsla av att få fram ett personligt uttryck och visa det på det sätt som dem tycker är bäst.
+        <br><br>
+        Uttrycket i sig visar på hur en helhet kan bestå av flera mindre delar och hur dem mindre boxarna tillsammans skapar en större form kan dra tankarna till hur vårt samhälle är uppbyggt. Med att användaren kan vrida på olika vinklar vill vi visa på hur olika perspektiv påverkar oss och vårt sätt att uppfatta världen samt hur den första uppfattningen möjligtvis inte ger en total bild av helheten utan en andra titt kan leda till ett nytt perspektiv. Genom att flytta blicken och få ett större perspektiv förändrar det även ditt synsätt. <br>
+        Att användaren inte kan välja färg själv men att denna kan ändå byta färg genom att klicka med musen kan kopplas till alla olika val vi gör som formar våra liv även om dessa inte alltid är självvalda.
+        <br><br>
+        Inspiration för vårt uttryck fick vi av att se på bilder och animationer av tidigare arbeten i p5 js som gav oss idéer för designval och möjliga potentiella lösningar. Vi använde oss exempelvis av sidan Bees & bombs där människor lägger upp sina skapelser inom kreativ programmering och där vi fick möjligheten att se vad som kan åstadkommas inom kreativ kodning. Vissa av våra idéer dök även upp när vi arbetade med koden.
+        <br><br><br>
+        <strong>Process</strong> <br> <br>
+        Genom arbetet med vårt uttryck har vi fått lära oss lägga mer funktioner, använda translate för 3D objekt, fått mer förståelse för loopar, lärt oss att använda slides och blivit bekvämare med att använda objekt och musklick. Det som varit svårt är att jobba med WEBGL och bland annat hur positioner behöver justeras när man använder det. Dessutom var att lägga till texter ett annat problem i WEBGL som vi inte kunde lyckas att varken lösa även efter vi har gjort det som ska göras, därför var vi tvungna att använda HTML, CSS och Onload funktion i JavaScript för att lösa problemet och visa våra texter, exempelvis Titel och instruktioner. <br>
+
+        En annan utmaning vi hade var när vi ville isolera boxarna i uttrycket och få dem att rotera separat från formen som helhet. Därför fick vi ett tips av lärare att istället för att använda oss av en färdig Box form skulle det bli bättre att skapa ett Box objekt på en separat funktion med sin egen rotation, för att kalla in den efter i loopen. <br>
+        Ytterligare stötte vi på ett annat problem med att göra en loop på djupet i vårt uttryck, men det lyckades vi efter vi testat olika sätt och frågat lärare som hänvisade till Z perspektiv som gav oss lösningen genom att har två Nested loopar på den första loopen, alltså att göra 3 loopar för X, Y och Z.
+        <br><br><br>
+
+        Genom att titta på videos, exempel och gå igenom andras koder och sen testa dessa i våran egen kod, utvecklades våran förståelse för p5 JS kodning och problemlösning, dvs. att vår tid hade använts för att se och testa andras exempel för att sen utveckla dem eller att ta grunder och göra på egna sätt. Allt det här visade oss mer och mer möjligheter som P5 JS erbjuder.
+        <br><br><br>
+        <strong>Kritik </strong> <br><br>
+        Kritiken vi fick var mestadels positiv som att vårt uttryck var öppet och interaktivt, men det behövde små förbättringar som att de önskade sig att det fanns mer instruktioner för uttryckets möjliga interaktioner samt en enklare och mer förståelig beskrivning av våra olika alternativa interaktionsmöjligheter med fokus på designen snarare än koden. Vi fick även en kommentar om att ändra bakgrundsfärgen runt själva behållaren för konceptet eftersom gul skärde sig med våra valda färger. Vidare fick vi även kritik för att slidsen var otydliga att använda och behövde förtydligas om vad dem gjorde och en uppmaning att användarna kunde klicka för att byta färg vilket några grupper hade missat.
+        <br><br>
+        Vi tog åt oss denna kritik och försökte förbättra så mycket som möjligt, speciellt när det gällde att visa instruktioner för interaktiviteten för att dem inte skulle missa något eftersom om användare inte vet det är som är möjligt, kan en stor del av arbetet förlorar sin nytta. <br>
+        Slutligen gav kritiken vårt arbete ett större och bredare synsätt för alla användare, dvs. att vi behöver tänka att användare kan vara någon som behöver instruktioner och förklaring för arbetet på samma sätt som används exempelvis i spel. En viktigt insikt var att små detaljer kan ge arbetet mycket finare resultat och utveckling.
+        <br><br><br><br>
+
+
+
+
+        <strong>Referenser </strong> <br><br>
+        Sidan där vi fick inspiration av olika animations exempel<br>
+        https://beesandbombs.tumblr.com <br><br>
+
+        En sida som vi fick se ett exempel på hur man använder texture funktion. <br>
+        https://medium.com/@naziafakhruddin/creating-2d-texture-on-a-3d-shape-in-p5-js-8ee8bfbfee4
+
+      </p>
+    </div>
+  </body>
+</html>

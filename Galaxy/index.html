@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>KP uppgift 4</title>
+      <!-- link p5.js and its addons like p5.dom.js or p5.sound.js -->
+      <script src="lib/p5.min.js" type="text/javascript"></script>
+      <script src="lib/p5.sound.min.js" type="text/javascript"></script>
+      <!-- link p5.play.js -->
+      <script src="lib/p5.play.js" type="text/javascript"></script>
+      <!-- link your javascript sketch -->
+      <script src="sketch.js" type="text/javascript"></script>
+      <script src="player.js" type="text/javascript"></script>
+      <script src="enemies.js" type="text/javascript"></script>
+      <script src="enemies2.js" type="text/javascript"></script>
+      <script src="enemies3.js" type="text/javascript"></script>
+      <script src="boss.js" type="text/javascript"></script>
+      <script type="text/javascript" src="reload.js"></script>
+
+
+      <!-- Låt detta script vara kvar, det är här för att jag ska kunna visa/dölja era reflektioner -->
+      <script>
+      let ref = true;
+      function togglaReflektioner(){
+        if(ref){
+          document.getElementById('reflektioner').style.display = 'none';
+        }
+        else{
+          document.getElementById('reflektioner').style.display = 'block';
+        }
+        ref = !ref;
+      }
+      </script>
+
+
+      <!-- lite CSS -->
+      <style>
+        *{
+          box-sizing: border-box;
+        }
+
+        body{
+          padding: 0;
+          margin: 0;
+          background-color: #211728;
+          font-family: helvetica, arial, verdana, sans-serif;
+          font-size: .8em;
+        }
+
+        #sketch-holder{
+          /*
+          notera att värden för bredd och höjd här korresponderar med det
+          som anges i sketchen: createCanvas(bredd, höjd)
+          */
+          width: 1000px;
+          height: 650px;
+          margin-left: 250px;
+          margin-right: 280px;
+          margin-top: 10px;
+          /*margin: 16px auto 0 auto;*/
+
+        }
+        #instruktioner{
+          margin: 1em auto 0 auto;
+          padding:1em;
+          width: 800px;
+          height: auto;
+          border: 1px solid #ccc;
+          color: 	#f4f4f4;
+          font-size: 17;
+          line-height: 1.5;
+        }
+
+          /*Här stylar jag en reload knapp för att starta om det som
+      finns i sidan utan att behöva ladda om allt för att kunna börja om.*/
+      .reload{
+        margin: 0 auto;
+        display: block;
+        border-radius: 32px;
+        cursor: pointer;
+        transition: all 0.1s ease-in-out;
+        color: #e0fbbd;
+        width: 110px;
+        height: 50px;
+        font-size: 16px;
+        background: #3f4249;;
+        text-transform:capitalize;
+      }
+      .reload:hover{
+        background: #2b59d6;
+      }
+
+      </style>
+   </head>
+   <body>
+       <!-- Detta är div:en som refereras till som 'parent' i sketchfilen, här kommer sketchen att visas -->
+      <div id="sketch-holder"></div>
+      <!-- reset knapp för att ladda om sidan -->
+      <button class="reload" onclick="sampleFunction()">Restart the game</button>
+      <div id="instruktioner">
+        <!--
+        Uppgift 4 - Skapa ett objektorienterat spel. I uppgiften ska ni jobba med klasser, objekt och instanser och med ett externt bibliotek (p5.play)
+
+        Steg 1 - Läs igenom läsanvisningarna. Ta er tid att läsa i boken, titta på videos och gå igenom tutorials.
+        Försäkra er om att ni förstår skillnaden mellan INSTANS och KLASS. Läs också koden i det här exemplet NOGA och försök förstå varje rad. Titta igenom koden i filerna 'player.js' och 'scoreboard.js'
+
+        Titta på p5.play-biblioteket: http://molleindustria.github.io/p5.play/. Här finns referens och exempel.
+
+        Steg 2-10 är övningar för att få känna på hur exemplet är uppbyggt, steg 11 är sjäva uppgiften.
+
+        Steg 2 - Skapa ytterligare en INSTANS av klassen Player och lägg till i världen/spelet (ni ska alltså inte skapa ytterligare en klass, utan en ny instans).
+
+        Steg 3 - Gör så att den nya instansen styrs av tangentbordstryckningar med andra tangenter (än de som redan används).
+
+        Steg 4 - Alla instanser av klassen Player får default 100 i score och 4 liv. Ändra så att score-tilldelningen istället är 50 och antalet liv är 3.
+
+        Steg 5 - Lägg till en 'label' för en eller flera instanser av Player-klassen. Ändra så att denna label visas och att antal liv och instansens namn syns i denna label.
+
+        Steg 6 - Ändra så att när en Player 'bränns i lavan' så ska dess score minska i steg av 10 poäng (istället för i steg av 1).
+
+        Steg 7 - Skapa en ny klass som heter 'Enemy'. Börja med att skapa en ny fil och döp den till enemy.js. Utgå från (kopiera) kod för klassen Player och ändra namnet på klassen. Kom ihåg att också inkludera den här nya filen i din index.html-fil.
+
+        Steg 8 - Ändra i konstruktorn så att Enemy tar emot andra parametrar än Player. T.ex. genom att ha randomiserade x- y-startvärden eller egenskapen 'evilness' (t.ex. en numerisk skala som kan användas för att orsaka olika grader av skada om en Player krockar med en Enemy), eller något annat som du finner användbart.
+
+        Steg 8 - I huvudprogrammet; lägg till några instanser av den nya Enemy-klassen och ge dessa animation och en egen grupp. Prova t.ex. att skapa många i toppen av skärmen och låt dessa 'ramla ner' från ovan.
+
+        Steg 9 - I draw-metoden, kolla om Player-objekten krockar med ett enemy-objekt. Ta i så fall bort enemy-objektet med hjälp av remove(). Gör också så att score för Player-instansen minskar vid krock med Enemy (titta i befintlig kod och i referensen).
+
+        Steg 10 - Lägg till ljud. Gör så att olika händelser (krockar, hopp, skador etc.) kopplas till något ljud som passar spelet. Kom ihåg att inkludera p5.sound.js i indexfilen!
+
+        Steg 11 - Gör ett spel med fungerande spelmekanik. Utveckla och gör om klasserna i exemplet. Gör fler om det behövs. Experimentera med p5.play, prova t.ex. att ändra gravitationen och 'farten' i JUMP och MOVE. Skapa bilder till animationer, prova att styra objekt med muspekare istället etc. osv. Titta på exemplen och experimentera med den kod som finns där. Tänk på att ange referenser där ni inspirerats/använt kod från t.ex. exempel!
+
+
+        Upgiften bedöms både baserat på visad förståelse i kommentarerna i koden samt på kvaliteten hos det färdiga uttrycket (t.ex. komplexitet, gestaltning, originalitet)
+
+        OBS! Varje rad eller block av sammanhängande kod ska kommenteras!!
+
+      -->
+
+        <h3>DIK, Kreativ programmering HT19 - Uppgift 4</h3>
+        <p>Namn: <name id="namn">Sal Paradise och Dean Moriarty</name></p>
+        <p><a href="http://molleindustria.github.io/p5.play/" target="_blank"></a>p5.play: Referens, exempel och källkod</p>
+        <p id="reflektioner">
+          <!--
+          Här nedan ska ni reflektera över uppgiften och även besvara några konkreta frågor
+
+          * Förklara vad som är intressant med ert uttryck. Hur knyter det t.ex. an till andra uttryck från konst, film eller spel? Har ni inspirerats av något? Kan ni hitta ord eller begrepp som är lämpliga för att beskriva ert uttryck?
+
+          * Reflektera kort över processen med uppgiften. Om ni körde fast, hur kom ni vidare? Har ni tittat i huvudsak på exempel, videotutorials, eller i boken? Vad hade ni problem med? Vad ägnade ni den mesta tiden åt?
+
+          * Reflektera kort över kommentarer ni fick från designkritiken - har ni gjort några ändringar baserat på kritiken?
+          -->
+
+          <!-- Börja reflektionerna här -->
+
+
+          <!-- Slut på reflektioner -->
+
+          <strong>Vad är intressant?</strong><br>
+          Det som är intressant med vårt spel är att det är roligt, relativt enkelt att använda samt att  variationen i svårighetsgrader och utmanar användaren för att skapa en engagerande spelupplevelse. Vi ville att vårt spel inte skulle vara allt för lätt utan hålla användarna engagerade och ge dem en känsla av glädje när dem lyckas klara dem olika svårighetsgraderna.<br>
+
+          Anledningen till att vi valde att arbeta med just vår idé för vårt spel var att den här typen av spel inte kräver många kontroller utan är enkel för användaren att lära sig att spela. Svårighetsgraderna i spelet ska vara utmanande, inte spelets uppbyggnad i sig. Denna typ av spel lockar även fram minnen från liknande spel som vissa användare kanske har spelat när dem var mindre som vi även tog inspiration från. Exempelvis fick vi inspiration från arcade/retro spel som Super mario, Galaxy, Space invaders och Cuphead.<br><br>
+
+
+          <strong>Process</strong><br>
+          Arbetet började med att se vilka spel som kunde göras med hjälp av JS P5 och vilka funktioner och egenskaper som erbjuds i spel bibliotek i P5. Det här steget var jätteviktigt för att kunna gå vidare, då handlade det mycket om att se olika exempel och utforska olika detaljer i p5 bibliotek. <br>
+          Som resultat fick vi se att arkadspel är spel som var möjliga att göra med ett enkelt och lagom avancerat programmeringsspråk som P5.<br><br>
+
+          Vi valde Space invaders spel som startpunkt för vårt arbete med tanken om att programmera ett liknande spel men på ett mer utvecklat sätt. Programmeringen började genom att använda Sprite klasser i play biblioteket för att skapa en spelare vilket är själva rymdskeppet och att ge den funktioner som rörelser och en möjlighet att skjuta skott.<br>
+          Vidare när det gäller fiender tänkte vi på hur Space invader har olika svårigheter och använde oss av detta i vårt eget arbete genom att skapa olika typer av fiender och ge dem olika nivåer av liv. Exempelvis kan vissa fiender dö av ett skott och har knappt någon rörelse, medans andra behöver flera skott för att dö och attackerar eller skjuter spelaren.<br>
+          Ytterligare arbete var att göra så att spelaren får poäng och antingen vinner eller förlorar samt att dessutom skapa en startsida för att användaren inte ska kastas in direkt i själva spelet.<br><br>
+
+          Vi tog användning av våra tidigare erfarenheter i arbete med ljud när vi arbetade med vårt ljud. Vi tog ljudeffekter och musik från olika sidor med tillgängliga ljud för nedladdning som exempelvis zapsplat.com och kenney.nl. Musiken och ljud klippen valdes genom att vi lyssnade igenom olika ljudklipp, välja ut dem vi trodde skulle passa in för att sedan testa dem i vårt spel.<br>
+          Bilderna på startsidan skapade vi själva i adobe illustrator.<br><br>
+
+          Flera problem och svårigheter har vi mött och vi löste dem genom att göra om kodarna och bygga kodar på andra kodar, alltså genom att komplicera och knyta ihop flera kodar kunde vi få en mycket mer utvecklade resultat som löste våra problem.<br>
+
+          <strong>Kritik och feedback</strong><br><br>
+          Vi använde oss av kritiken vi fick under kritik sessionen på fredagen för att förbättra vårt spel och göra små ändringar för att förbättra spelupplevelsen.<br>
+
+          Kritik som vi fick var att vi kunde ändra html bakgrunden till något som matchade ihop mer med våra färgval samt att spelet inte var riktigt centrerad på sidan.Vi la till en vit “border” runt sketchen samt centrerade den.
+          En annan tanke som vi fick ta del av var att vi borde lägga till mer alternativ för kontrollerna av spelarens avtar och skjut mekanismen för att skapa samma grad av spelupplevelse för både höger och vänsterhänta. Detta fixades med att vi la till ett alternativt kommando för att kunna skjuta. Vi valde shift som en alternativ lösning vilket skulle göra det enklare för vänsterhänta att spela spelet.<br>
+
+          Vi fick även många positiva kommentarer som att flera grupper tyckte att vårt spel var roligt att använda, kul med olika rörelsemönster på fienderna och det uppskattades att vi använde oss av bilder och musik. Den positiva feedbacken vi fick för vårt arbete gjorde att vi kände oss glada av att många gillade vårt arbete samt ledde till att vi kunde lära oss och utveckla vår förståelse för detaljer som vi kan använda oss av i senare arbeten.<br>
+
+          <strong>Referenser</strong><br><br>
+
+          Ljudklipp och musik:<br>
+          <a href =”https://www.zapsplat.com”>Zapsplat.com</a><br>
+          <a href =”https://www.kenney.nl”>Kenney.nl</a><br>
+
+          Ikoner:<br>
+          <a href =”https://www.flaticon.com”>Flaticon.com</a><br>
+
+        </p>
+      </div>
+
+   </body>
+</html>

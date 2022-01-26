@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>KP uppgift 3</title>
+
+
+    <script src="libraries\p5.min.js" type="text/javascript"></script>
+    <script src="libraries\p5.sound.min.js" type="text/javascript"></script>
+
+<!-- Här inkluderas själva p5.js-sketchen -->
+    <script src="sketch_uppgift_3.js"></script>
+    <script src="animal.js"></script>
+    <!-- Låt detta script vara kvar, det är här för att jag ska kunna visa/dölja era reflektioner -->
+    <script>
+    let ref = true;
+    function togglaReflektioner(){
+      if(ref){
+        document.getElementById('reflektioner').style.display = 'none';
+      }
+      else{
+        document.getElementById('reflektioner').style.display = 'block';
+      }
+      ref = !ref;
+    }
+    </script>
+
+
+    <script type="text/javascript" src="reload.js"></script>
+
+  <!-- lite CSS -->
+  <style>
+    *{
+      box-sizing: border-box;
+    }
+
+    body{
+      padding: 0;
+      margin: 0;
+      background-color: #DECEAA;
+      font-family: helvetica, arial, verdana, sans-serif;
+      font-size: .8em;
+    }
+
+    #sketch-holder{
+      /*
+      notera att värden för bredd och höjd här korresponderar med det
+      som anges i sketchen: createCanvas(bredd, höjd)
+      */
+      width: 1000px;
+      height: 400px;
+      margin: 0 auto 0 auto;
+      border: 1px solid #ccc;
+    }
+
+    /* CSS element för bilden under sketch */
+      #frogs{
+        /*transform: skewY(0deg);*/
+        transform: rotate(0deg);
+        margin: 1em auto 0 auto;
+        margin-right: 1;
+        padding:1em;
+        width: 600px;
+        height: auto;
+        border: 1px transparent;
+        opacity: 0.7;
+      }
+
+  /* css element för textrutan under sketchen och bilden */
+      #textbox{
+        /*transform: skewY(0deg);
+        transform: rotate(0deg);*/
+        margin: auto;
+        margin-top: 40px;
+        padding:1em;
+        width: 500px;
+        height: auto;
+        border: 1px solid;
+        opacity: 1;
+        color: #000;
+        /*background-color: #fff;*/
+      }
+
+        /*Här stylar jag en reload knapp för att starta om det som
+    finns i sidan utan att behöva ladda om allt för att kunna börja om.*/
+    .reload{
+      margin: 0 auto;
+      display: block;
+      border-radius: 32px;
+      cursor: pointer;
+      transition: all 0.1s ease-in-out;
+      color: #e0fbbd;
+      width: 110px;
+      height: 50px;
+      font-size: 16px;
+      background: #3f4249;;
+      text-transform:capitalize;
+    }
+    .reload:hover{
+      background: #2b59d6;
+    }
+
+    #reflektioner{
+      font-size: 16;
+      line-height: 1.5;
+    }
+
+  </style>
+
+  </head>
+  <body>
+    <!-- Detta är div:en som refereras till som 'parent' i sketchfilen, här kommer sketchen att visas -->
+    <div id="sketch-holder"></div>
+    <!-- reset knapp för att ladda om sidan -->
+    <button class="reload" onclick="sampleFunction()">Reset</button>
+
+    <img src="assets/frogparade1.png" alt="En parad av grodor" id="frogs">
+
+    <div id="textbox">
+      <!--
+      Instruktioner, uppgift 3 - Skapa en sketch med grafiska element som reagerar på musik/ljud eller låt data skapa ljud och grafik. I uppgiften ska ni alltså - förutom ljud - också jobba med grafiska element som t.ex. bitmapbilder och/eller SVG-bilder och fonter. Experimentera också med att hitta sätt att få ljudet att påverka/relatera till 'hela sidan' genom att koppla olika värden och/eller interaktion till html/css (lägg gärna till html-element och css-angivelser som ni tycker ni behöver). Steg 1-8 är som vanligt övningssteg, själva uppgiften finns i steg 9.
+
+      Steg 1 - Läs igenom läsanvisningarna. Ta er tid att läsa i boken, titta på videos och gå igenom tutorials. Läs också koden i det här exemplet NOGA och försök förstå varje rad.
+
+      Steg 2 - Läs kapitel 7/Media i kursboken. Lägg till en eller flera bitmapbilder (prova olika filtyper) med hjälp av loadImage(), bilderna läggs i assets-mappen). Tänk på att jobba med små/lågupplösta bilder så blir de lättare att animera.
+
+      Steg 3 - Prova att animera bilderna med musiken genom att ändra position och storlek, samt med hjälp av t.ex. funktionerna tint() och filter().
+
+      Steg 4 - Läs kapitel 11/Arrays i kursboken. Skapa en array/behållare med plats för tre bilder. Ladda in tre bitmapbilder i arrayen.
+
+      Steg 5 - Se om ni kan låta volymen styra vilken av bilderna i bildArray som ritas upp i draw().  t.ex. genom att använda principen bildArray[level], eller någon annan lösning.
+
+      Steg 6 - Läs avnitt om fonter i kursboken (Kap. 7/Media). Lägg till ett eller flera textobjekt med olika typsnitt med hjälp av loadFont(). Leta gärna upp fria true type-fonter (.ttf) på nätet.
+
+      Steg 7 - Animera textobjekten till musiken genom att ändra t.ex. position och storlek.
+
+      Steg 8 - Titta på avsnittet i koden som hanterar hur html-element kan påverkas från sketchen. Prova att låta något värde som genererats av ljudet styra någon förändring av ett html-element (t.ex. färg, placering, textinnehåll etc.).
+
+      Steg 9 - Skapa ett sammanhängande uttryck där grafik (bilder och textobjekt) hänger ihop med musiken på ett menings- och yttrycksfullt sätt (mer detaljer om inlämninngen finns i texten ovan). Detta är uppgiften som lämnas in.
+
+      Tips - prova att ladda in en video (titta i materialet ni arbetade med under introveckan, där finns en video inkluderad). Prova att rita ut objekt ovanpå videon.
+
+      Bedömningen av uppgiften baseras både på visad förståelse i kommentarerna i koden, samt på kvaliteten hos det färdiga uttrycket (t.ex. komplexitet, gestaltning, originalitet)
+
+      OBS! Varje rad kod ska kommenteras!!!
+
+      OBS! Tänk på att det kan ta en stund för programmet att ladda in er ljudfil. Det innebär att programmet oftast inte startar direkt när ni laddar sidam.
+      -->
+
+      <h3>DIK, Kreativ programmering HT20 - Uppgift 3</h3>
+      <p id="procent-visare"></p>
+      <p>Namn: <name id="namn">Klara Eriksson och Saliem Antoun</name></p>
+      <p id="reflektioner">
+      <!--
+      Här nedan ska ni reflektera över uppgiften och även besvara några konkreta frågor
+
+      * Förklara vad som är intressant med ert uttryck. Hur knyter det t.ex. an till andra uttryck från konst, film eller spel? Har ni inspirerats av något? Kan ni hitta ord eller begrepp som är lämpliga för att beskriva ert uttryck?
+
+      * Reflektera kort över processen med uppgiften. Om ni körde fast, hur kom ni vidare? Har ni tittat i huvudsak på exempel, videotutorials, eller i boken? Vad hade ni problem med? Vad ägnade ni den mesta tiden åt?
+
+      * Reflektera kort över kommentarer ni fick från designkritiken - har ni gjort några ändringar baserat på kritiken?
+      -->
+
+      <!-- Börja reflektionerna här -->
+      <strong>Vad är intressant?</strong><br>
+      <br>
+      Vårt uttryck bjuder in användaren att utforska uttrycket på ett lekfullt och interaktivt sätt. Genom att låta användaren styra en avatar ger vi dem ett verktyg för att uppleva uttrycket i egen takt och nästan alla element i sketchen  påverkas av musiken vilket  drar med användaren och skapar en lustfylld stämning.
+      <br> Uttrycket är föränderligt genom att atmosfären kan ändras beroende på vilken musik som spelas vilket ger uttrycket en viss flexibilitet.
+      Inspiration för vårt uttryck tog vi från olika källor som bland annat plattforms spelserien Super Mario och exempelvis ”runner game’’ spelet från google som dyker upp när man inte har något internet och där man kontrollerar en hoppandet dinosaurie. Ett “runner game” är ett spel där man kontrollerar en avatar där målet är att springa och komma så långt som möjligt. Vi har även tagit inspiration från The Coding Train videos från youtube och exempelkod från p5 js hemsida.
+      <br>Något unikt som frambringas här är att vi lyckats skapa animation och utseende för element med hjälp av spelets ljud, som kunde användas vidare för att göra spelet svårare genom att höja musiken och animationens takt och tempo.
+      <br>
+      <br>
+      <strong>Processen</strong><br>
+      <br>
+      Vi började våran arbetsprocess med att försöka ta fram olika idéförslag och diskutera dessa och jämföra deras lämplighet och komplexitet. Vi började även kolla igenom olika videos om p5 js kodning för bland annat ljud och rörelse. Genom att skaffa oss förkunskaper kunde vi enklare se vad som var möjligt att göra inom ramen för vårt arbete. Vi kollade även på exempel koden vi fick från SH och lekte runt med denna för att se och lära oss hur denna var uppbyggd. Editors vi använde oss av för kodning var Atom och P5 js.<br>
+      Förkunskaperna som vi fick gav oss ett bredare tankesätt för hur man kan dra nytta av ljudet för att animera element och påverka användares upplevelse.<br>
+      Vår arbetsprocess hade inte riktigt fokus på att skapa ett spel när det börjades, men när vi insåg vilka möjligheter som kunde nås byggde vi på idén med att rita vågor med ljud till att skapa en bakgrund som ser ut som berg och byggnader.<br>
+      Vidare fick vi utforska mer och mer och fördjupa oss i mer detaljerad förståelse för ett slutresultat, genom att använda oss av egna funktioner, loopar, arrays och if-satser så att ljud, bild, fonter och andra element skapar ett tydligt koncept. <br><br>
+
+      <strong>Kritik och feedback</strong><br>
+      <br>
+      Kritik sessionen var en dag tidigare än vad den varit de tidigare veckorna vilket ledde till att vi inte hade en hundraprocentig färdig kod vid presentationen där exempelvis vissa element utanför sketchen saknades. <br>
+      Vi tog dock åt oss kritiken vi fått under sessionen för att försöka göra förbättringar i vår kod. Kommentarer vi fick var bland annat att vi behövde kommentera koden, vilket var en sak som vi inte hade hunnit ännu, och tips på hur vi kunde förbättra poängsystemet/”death counter” genom att till exempelvis låta avataren “dö’’ och låta användaren starta om när liv/poängen blev noll istället för att bli minus poäng som vi hade då.
+      Vi fick även positiv feedback om att många grupper tyckte att vårt uttryck var roligt att använda, att koden var behaglig att se på och välstädad samt att dem tyckte att det var roligt och spännande att kontrollera en avatar. Dem flesta liknade vårt uttryck till ett spel vilket var det som vi hade i åtanke för slutresultatet.<br>
+      Det som var extra viktigt var att vi kunde se vilka möjligheter som kunde göras och förbättras efter kritiken vi fått. Vi kunde även se med ett bredare synsätt för att även utveckla idéerna som vi fått av andra studenter för att nå mer än det som önskats.<br><br>
+
+
+      <strong>Referenser och inspirationer:</strong><br>
+      <a href="https://www.youtube.com/watch?v=jEwAMgcCgOA&ab_channel=TheCodingTrain">Sounds with Shiffman</a><br>
+      <a href="https://thecodingtrain.com/CodingChallenges/147-chrome-dinosaur.html">Dinosaur game with Shiffman</a><br><br>
+
+      <strong>Bildkällor:</strong><br>
+      <a href="https://pixabay.com/">Pixabay</a><br>
+      <a href="https://www.flaticon.com/">Flaticon</a><br>
+
+      <!-- Slut på reflektioner -->
+      </p>
+    </div>
+  </body>
+</html>
